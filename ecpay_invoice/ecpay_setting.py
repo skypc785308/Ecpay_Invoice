@@ -175,17 +175,9 @@ class EcpayDelayFlagType():
 # 交易類別
 class EcpayPayTypeCategory():
 
-    # ECBANK
-
-    Ecbank = '1'
-
     # ECPAY
 
     Ecpay = '2'
-
-    # ALLPAY
-
-    Allpay = '3'
 
 
 # 通知類別

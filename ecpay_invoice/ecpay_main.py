@@ -350,15 +350,12 @@ class ECPay_INVOICE():
         if len(arParameters['RelateNumber']) > 30:
             arErrors.append('4:RelateNumber max langth as 30.')
 
-        # 5.客戶代號CustomerID
+        # 5.客戶編號CustomerID
 
-        # * 載具類別為1 則客戶代號需有值
-        if arParameters['CarruerType'] == '1' and len(arParameters['CustomerID']) == 0:
-            arErrors.append('5:CustomerID is required.')
         # *預設最大長度為20碼
         if len(arParameters['CustomerID']) > 20:
             arErrors.append('5:CustomerID max langth as 20.')
-        # *比對客戶代號 只接受英、數字與下底線格式
+        # *比對客戶編號 只接受英、數字與下底線格式
         if len(arParameters['CustomerID']) > 0:
             if re.match("^[a-zA-Z0-9_]+$", arParameters['CustomerID']) == None:
                 arErrors.append('5:Invalid CustomerID.')
@@ -443,7 +440,7 @@ class ECPay_INVOICE():
                     arErrors.append( "12:Offline Print should be Yes.")
 
         # 13.捐贈註記Donation
-        #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '2'
+        #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '0'
         if arParameters['Donation'] != EcpayDonation.Yes and arParameters['Donation'] != EcpayDonation.No:
             arErrors.append( "13:Invalid Donation.")
         # *若統一編號有值時，則VAL = '2'(不捐贈)
@@ -717,15 +714,15 @@ class ECPay_INVOICE_DELAY():
         if len(arParameters['RelateNumber']) > 30:
             arErrors.append('4:RelateNumber max langth as 30.')
 
-        # 5.客戶代號CustomerID
+        # 5.客戶編號CustomerID
 
-        # * 載具類別為1 則客戶代號需有值
+        # * 載具類別為1 則客戶編號需有值
         if arParameters['CarruerType'] == '1' and len(arParameters['CustomerID']) == 0:
             arErrors.append('5:CustomerID is required.')
         # *預設最大長度為20碼
         if len(arParameters['CustomerID']) > 20:
             arErrors.append('5:CustomerID max langth as 20.')
-        # *比對客戶代號 只接受英、數字與下底線格式
+        # *比對客戶編號 只接受英、數字與下底線格式
         if len(arParameters['CustomerID']) > 0:
             if re.match("^[a-zA-Z0-9_]+$", arParameters['CustomerID']) == None:
                 arErrors.append('5:Invalid CustomerID.')
@@ -802,15 +799,8 @@ class ECPay_INVOICE_DELAY():
         if len(arParameters['CustomerIdentifier']) > 0:
             if arParameters['Print'] != EcpayPrintMark.Yes:
                 arErrors.append( "12:CustomerIdentifier Print should be Yes.")
-        # 線下列印判斷
-        #  1200079當線下廠商開立發票無載具且無統一編號時，必須列印。
-        if arParameters['OnLine'] == False:
-            if arParameters['CarruerType'] == EcpayCarruerType.No and len(arParameters['CustomerIdentifier']) == 0:
-                if arParameters['Print'] != EcpayPrintMark.Yes:
-                    arErrors.append( "12:Offline Print should be Yes.")
-
         # 13.捐贈註記Donation
-        #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '2'
+        #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '0'
         if arParameters['Donation'] != EcpayDonation.Yes and arParameters['Donation'] != EcpayDonation.No:
             arErrors.append( "13:Invalid Donation.")
         # *若統一編號有值時，則VAL = '2'(不捐贈)
@@ -949,9 +939,9 @@ class ECPay_INVOICE_DELAY():
         # *若為延遲開立時，延遲天數須介於1至15天內
         if arParameters['DelayFlag'] == EcpayDelayFlagType.Delay:
             
-            if arParameters['DelayDay'] < 1 or arParameters['DelayDay'] > 15:
+            if int(arParameters['DelayDay']) < 1 or int(arParameters['DelayDay']) > 15:
 
-                arErrors.append( "31:DelayDay should be 1 ~ 15.")
+                arErrors.append("31:DelayDay should be 1 ~ 15.")
         # *若為觸發開立時，延遲天數須介於0至15天內
         if arParameters['DelayFlag'] == EcpayDelayFlagType.Trigger:
             if arParameters['DelayDay'] < 0 or arParameters['DelayDay'] > 15:
