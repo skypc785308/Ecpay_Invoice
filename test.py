@@ -84,7 +84,7 @@ def test_delay_invoice():
 
     # 2.寫入基本介接參數
     ecpay_invoice.Invoice_Method = 'INVOICE_DELAY'
-    ecpay_invoice.Invoice_Url = 'https://einvoice-stage.ecpay.com.tw/Invoice/Issue'
+    ecpay_invoice.Invoice_Url = 'https://einvoice-stage.ecpay.com.tw/Invoice/DelayIssue'
     ecpay_invoice.MerchantID = '2000132'
     ecpay_invoice.HashKey = 'ejCk326UnaZWKisg'
     ecpay_invoice.HashIV = 'q9jcZX8Ib9LM8wYk'
@@ -96,9 +96,9 @@ def test_delay_invoice():
         'ItemName': '商品名稱一',
         'ItemCount': 1,
         'ItemWord': '批',
-        'ItemPrice': 50,
+        'ItemPrice': 0,
         'ItemTaxType': 1,
-        'ItemAmount': 50,
+        'ItemAmount': 0,
         'ItemRemark': '商品備註一'
     })
     ecpay_invoice.Send['Items'].append({
@@ -114,9 +114,9 @@ def test_delay_invoice():
         'ItemName': '商品名稱三',
         'ItemCount': 1,
         'ItemWord': '批',
-        'ItemPrice': 200,
+        'ItemPrice': 250,
         'ItemTaxType': 1,
-        'ItemAmount': 200,
+        'ItemAmount': 250,
         'ItemRemark': '商品備註三'
     })
 
@@ -150,11 +150,79 @@ def test_delay_invoice():
     # 4. 送出
     aReturn_Info = ecpay_invoice.Check_Out()
     print 'RelateNumber：' + str(RelateNumber)
+    print aReturn_Info['RtnMsg'].encode('utf-8')
+    assert aReturn_Info['RtnMsg'].encode('utf-8') == '開立延遲發票成功'
+
+
+def test_allowance():
+    ecpay_invoice = EcpayInvoice()
+
+    # 2.寫入基本介接參數
+    ecpay_invoice.Invoice_Method = 'ALLOWANCE'
+    ecpay_invoice.Invoice_Url = 'https://einvoice-stage.ecpay.com.tw/Invoice/Allowance'
+    ecpay_invoice.MerchantID = '2000132'
+    ecpay_invoice.HashKey = 'ejCk326UnaZWKisg'
+    ecpay_invoice.HashIV = 'q9jcZX8Ib9LM8wYk'
+
+    # 3.寫入發票相關資訊
+
+    # 商品資訊
+    ecpay_invoice.Send['Items'].append({
+        'ItemName': '商品名稱一',
+        'ItemCount': 1,
+        'ItemWord': '批',
+        'ItemPrice': 100,
+        'ItemTaxType': 1,
+        'ItemAmount': 100,
+        'ItemRemark': '商品備註一'
+    })
+
+    RelateNumber = 'ECPAY' + time.strftime("%Y%m%d%H%M%S", time.localtime()) +\
+                   str(random.randint(1000000000, 2147483647))  # 產生測試用自訂訂單編號
+    ecpay_invoice.Send['CustomerName'] = ''
+    ecpay_invoice.Send['InvoiceNo'] = 'FY10001325'
+    ecpay_invoice.Send['AllowanceNotify'] = 'E'
+    ecpay_invoice.Send['NotifyMail'] = 'test@localhost.com'
+    ecpay_invoice.Send['NotifyPhone'] = ''
+    ecpay_invoice.Send['AllowanceAmount'] = 100
+
+    # 4. 送出
+    aReturn_Info = ecpay_invoice.Check_Out()
+    print 'RelateNumber：' + str(RelateNumber)
     print aReturn_Info
 
     print aReturn_Info['RtnMsg'].encode('utf-8')
-    print '發票號碼' + aReturn_Info['InvoiceNumber'].encode('utf-8')
-    assert aReturn_Info['RtnMsg'].encode('utf-8') == '開立發票成功'
+    assert aReturn_Info['RtnMsg'].encode('utf-8') == '成功'
 
-test_delay_invoice()
+
+def test_invoice_void():
+    ecpay_invoice = EcpayInvoice()
+
+    # 2.寫入基本介接參數
+    ecpay_invoice.Invoice_Method = 'INVOICE_VOID'
+    ecpay_invoice.Invoice_Url = 'https://einvoice-stage.ecpay.com.tw/Invoice/IssueInvalid'
+    ecpay_invoice.MerchantID = '2000132'
+    ecpay_invoice.HashKey = 'ejCk326UnaZWKisg'
+    ecpay_invoice.HashIV = 'q9jcZX8Ib9LM8wYk'
+
+    # 3.寫入發票相關資訊
+    ecpay_invoice.Send['InvoiceNumber'] = 'FY10001328'
+    ecpay_invoice.Send['Reason'] = 'ISSUE INVALID TEST'
+
+    # 4. 送出
+    aReturn_Info = ecpay_invoice.Check_Out()
+    print aReturn_Info
+    print aReturn_Info['RtnMsg'].encode('utf-8')
+    assert aReturn_Info['RtnMsg'].encode('utf-8') == '作廢發票成功'
+
+test_invoice_void()
+
+
+
+
+
+
+
+
+
 

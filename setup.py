@@ -11,8 +11,8 @@ with io.open("README.md", encoding='utf-8') as f:
 install_requires = open("requirements.txt").readlines()
 
 setup(
-    name="ecpay_invoice",  # pip 安裝時用的名字
-    version=VERSION,  # 當前版本，每次更新上傳到pypi都需要修改
+    name="ecpay_invoice",
+    version=VERSION,
     author="Hiskyz",
     author_email="skypc785308@gmail.com",
     url="https://github.com/skypc785308/ecpay_invoice",

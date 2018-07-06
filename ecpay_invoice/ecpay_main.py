@@ -180,7 +180,7 @@ class ECPay_Invoice_Send():
                 else:
                     arParameters[key] = urllib.quote(val)
 
-                # arParameters[key] = ECPay_CheckMacValue.do_str_replace(arParameters[key])
+                arParameters[key] = ECPay_CheckMacValue.do_str_replace(arParameters[key])
         return arParameters
 
     '''
@@ -226,7 +226,7 @@ class ECPay_Invoice_Send():
     def urldecode_process(arParameters = dict, urlencode_field = dict):
         for key, val in arParameters.items():
             if key in urlencode_field:
-                # arParameters[key] = ECPay_CheckMacValue.do_str_replace(arParameters[key], False)
+                arParameters[key] = ECPay_CheckMacValue.restore_str_replace(arParameters[key])
                 arParameters[key] = urllib.unquote(val)
 
         return arParameters
@@ -520,7 +520,7 @@ class ECPay_INVOICE():
                     arErrors.append('22:Invalid ItemWord.')
                     break
                 bFind_Tag = str(val['ItemPrice']).find('|')
-                if bFind_Tag != -1 or not val['ItemPrice']:
+                if bFind_Tag != -1 or val['ItemPrice'] < 0:
                     bError_Tag = True
                     arErrors.append('23:Invalid ItemPrice.')
                     break
@@ -530,7 +530,7 @@ class ECPay_INVOICE():
                     arErrors.append('24:Invalid ItemTaxType.')
                     break
                 bFind_Tag = str(val['ItemAmount']).find('|')
-                if bFind_Tag != -1 or not val['ItemAmount']:
+                if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
                     arErrors.append('25:Invalid ItemAmount.')
                     break
@@ -880,7 +880,7 @@ class ECPay_INVOICE_DELAY():
                     arErrors.append('22:Invalid ItemWord.')
                     break
                 bFind_Tag = str(val['ItemPrice']).find('|')
-                if bFind_Tag != -1 or not val['ItemPrice']:
+                if bFind_Tag != -1 or val['ItemPrice'] < 0:
                     bError_Tag = True
                     arErrors.append('23:Invalid ItemPrice.')
                     break
@@ -890,7 +890,7 @@ class ECPay_INVOICE_DELAY():
                     arErrors.append('24:Invalid ItemTaxType.')
                     break
                 bFind_Tag = str(val['ItemAmount']).find('|')
-                if bFind_Tag != -1 or not val['ItemAmount']:
+                if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
                     arErrors.append('25:Invalid ItemAmount.')
                     break
@@ -1104,7 +1104,7 @@ class ECPay_ALLOWANCE():
                     arErrors.append('22:Invalid ItemWord.')
                     break
                 bFind_Tag = str(val['ItemPrice']).find('|')
-                if bFind_Tag != -1 or not val['ItemPrice']:
+                if bFind_Tag != -1 or val['ItemPrice'] < 0:
                     bError_Tag = True
                     arErrors.append('23:Invalid ItemPrice.')
                     break
@@ -1114,7 +1114,7 @@ class ECPay_ALLOWANCE():
                     arErrors.append('24:Invalid ItemTaxType.')
                     break
                 bFind_Tag = str(val['ItemAmount']).find('|')
-                if bFind_Tag != -1 or not val['ItemAmount']:
+                if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
                     arErrors.append('25:Invalid ItemAmount.')
                     break
@@ -1153,7 +1153,7 @@ class ECPay_ALLOWANCE():
         # 39.通知電子信箱 NotifyMail
         # *若客戶電子信箱有值時，則格式僅能為Email的標準格式
         if len(arParameters['NotifyMail']) > 0:
-            if re.match('/^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-_]+\.([a-z0-9\-_]+\.)*?[a-z]+$/is', arParameters['NotifyMail']) == None:
+            if re.match('^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-_]+\.([a-z0-9\-_]+\.)*?[a-z]+$', arParameters['NotifyMail']) == None:
                 arErrors.append('39:Invalid Email Format.')
         # *下述情況通知電子信箱不可為空值(通知類別為E-電子郵件)
         if arParameters['AllowanceNotify'] == EcpayAllowanceNotifyType.Email \
@@ -1189,7 +1189,7 @@ class ECPay_ALLOWANCE():
 
         # 41.折讓單總金額 AllowanceAmount
         # *必填項目
-        if len(arParameters['AllowanceAmount']) == 0:
+        if len(str(arParameters['AllowanceAmount'])) == 0:
             arErrors.append('41:AllowanceAmount is required.')
         else:
             # *含稅總金額
@@ -1208,7 +1208,7 @@ class ECPay_ALLOWANCE():
     '''
     *4欄位例外處理方式(送壓碼前)
     '''
-    def check_exception(arParameters = dict):
+    def check_exception(self, arParameters = dict):
         return arParameters
 '''
 *  D發票作廢
@@ -1705,7 +1705,7 @@ class ECPay_INVOICE_NOTIFY():
         # 45.NotifyMail 發送電子信箱
         # *若客戶電子信箱有值時，則格式僅能為Email的標準格式
         if len(arParameters['NotifyMail']) > 0:
-            if re.match("/^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-_]+\.([a-z0-9\-_]+\.)*?[a-z]+$/is", arParameters['NotifyMail']) == None:
+            if re.match("^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-_]+\.([a-z0-9\-_]+\.)*?[a-z]+$", arParameters['NotifyMail']) == None:
                 arErrors.append('45:Invalid Email Format.')
 
         # *下述情況通知電子信箱不可為空值(發送方式為E-電子郵件)

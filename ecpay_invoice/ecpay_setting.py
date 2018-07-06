@@ -278,7 +278,7 @@ class ECPay_IO():
         # 組合字串
         for key, val in parameters.items():
             if sSend_Info == '':
-                sSend_Info += key + '=' + val
+                sSend_Info += key + '=' + str(val)
             else:
                 sSend_Info += '&' + key + '=' + str(val)
 
@@ -308,7 +308,7 @@ class ECPay_CheckMacValue():
             sorted_dict.insert(0, ('HashKey', HashKey))
             sorted_dict.append(('HashIV', HashIV))
 
-            # URL Encode編碼
+            # URL Encode編碼(EX:encode ' ' to '+')
 
             sMacValue = urllib.urlencode(sorted_dict)
 
@@ -319,9 +319,8 @@ class ECPay_CheckMacValue():
 
 
             # 取代為與 dotNet 相符的字元
-            # sMacValue = ECPay_CheckMacValue.do_str_replace(sMacValue)
+            sMacValue = ECPay_CheckMacValue.do_str_replace(sMacValue)
 
-            print '替換後產物' + sMacValue
 
             # 編碼
             if encType == ECPay_EncryptType.ENC_SHA256:
@@ -335,23 +334,17 @@ class ECPay_CheckMacValue():
             return sMacValue
 
 
-    # @staticmethod
-    # def restore_str_replace(be_str):
-    #     be_str = be_str.replace('!', '%21')
-    #     be_str = be_str.replace('*', '%2a')
-    #     be_str = be_str.replace('(', '%28')
-    #     be_str = be_str.replace(')', '%29')
-    #     be_str = be_str.replace(' ', '%20')
-    #
-    #     return be_str
+    @staticmethod
+    def restore_str_replace(string):
+        mapping_dict = {'!': '%21', '*': '%2a', '(': '%28', ')': '%29'}
+        for key, val in mapping_dict.items():
+            string = string.replace(key, val)
+
+        return string
 
     @staticmethod
-    def do_str_replace(string, type_check_out=True):
-        if type_check_out:
-            mapping_dict = {'-': '%2d', '_': '%5f', '.': '%2e', '!': '%21', '*': '%2a', '(': '%28', ')': '%29',
-                            '%2f': '%252f', '%3a': '%253a'}
-        else:
-            mapping_dict = {'-': '%2d', '_': '%5f', '.': '%2e', '!': '%21', '*': '%2a', '(': '%28', ')': '%29'}
+    def do_str_replace(string):
+        mapping_dict = {'!': '%21', '*': '%2a', '(': '%28', ')': '%29'}
         for key, val in mapping_dict.items():
             string = string.replace(val, key)
 
