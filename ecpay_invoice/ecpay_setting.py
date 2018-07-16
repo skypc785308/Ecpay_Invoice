@@ -283,7 +283,7 @@ class ECPay_IO():
                 sSend_Info += '&' + key + '=' + str(val)
 
         r = requests.post(ServiceURL, data=sSend_Info, headers=headers)
-        return r.text
+        return r.text.encode('utf-8')
 
 
 class ECPay_CheckMacValue():
@@ -298,24 +298,14 @@ class ECPay_CheckMacValue():
             if 'CheckMacValue' in arParameters:
                 del arParameters['CheckMacValue']
 
-            if 'RtnMsg' in arParameters:
-                if type(arParameters['RtnMsg']).__name__ == 'unicode':
-                    arParameters['RtnMsg'] = arParameters['RtnMsg'].encode('utf-8')
-            if 'II_Date' in arParameters:
-                if type(arParameters['II_Date']).__name__ == 'unicode':
-                    arParameters['II_Date'] = arParameters['II_Date'].encode('utf-8')
+            sorted_str = 'HashKey=' + HashKey
 
-            sorted_dict = sorted(arParameters.items())
-            #  組合字串
+            for key in sorted(arParameters.keys(), key=str.lower):
+                sorted_str += '&' + key + '=' + str(arParameters[key])
 
-            sorted_dict.insert(0, ('HashKey', HashKey))
-            sorted_dict.append(('HashIV', HashIV))
+            sorted_str += '&HashIV=' + HashIV
 
-            # URL Encode編碼(EX:encode ' ' to '+')
-
-            sMacValue = urllib.urlencode(sorted_dict)
-
-            sMacValue = urllib.quote(sMacValue, '+%')
+            sMacValue = urllib.quote_plus(sorted_str)
 
 
             # 轉成小寫
@@ -340,7 +330,7 @@ class ECPay_CheckMacValue():
 
     @staticmethod
     def restore_str_replace(string):
-        mapping_dict = {'!': '%21', '*': '%2a', '(': '%28', ')': '%29', '%252f': '%2f', '%253a': '%3a'}
+        mapping_dict = {'!': '%21', '*': '%2a', '(': '%28', ')': '%29'}
         for key, val in mapping_dict.items():
             string = string.replace(key, val)
 

@@ -6,6 +6,10 @@ import sys
 import re
 from ecpay_setting import *
 
+class CustomException(Exception):
+   """Base class for other exceptions"""
+   pass
+
 
 class EcpayInvoice():
 
@@ -129,7 +133,7 @@ class ECPay_Invoice_Send():
             CheckMacValue = ECPay_Invoice_Send.generate_checkmacvalue(arException, InvoiceObj_Return.none_verification, HashKey, HashIV)
             if CheckMacValue != arParameters['CheckMacValue']:
                 print '自己壓的：' + CheckMacValue
-                print '系統回傳的：' + arParameters['CheckMacValue'].encode('utf-8')
+                print '系統回傳的：' + arParameters['CheckMacValue']
                 print '注意：壓碼錯誤'
                 Exception('注意：壓碼錯誤')
             else:
@@ -173,13 +177,7 @@ class ECPay_Invoice_Send():
     def urlencode_process(arParameters=dict, urlencode_field=dict):
         for key, val in arParameters.items():
             if key in urlencode_field:
-                if type(val).__name__ == 'unicode':
-                    arParameters[key] = urllib.quote(val.encode('utf-8'))
-                elif type(val).__name__ == 'int':
-                    arParameters[key] = urllib.quote(str(val))
-                else:
-                    arParameters[key] = urllib.quote(val)
-
+                arParameters[key] = urllib.quote(val)
                 arParameters[key] = ECPay_CheckMacValue.do_str_replace(arParameters[key])
         return arParameters
 
@@ -573,11 +571,12 @@ class ECPay_INVOICE():
             if arParameters['vat']:
                 if arParameters['vat'] != EcpayVatType.Yes and arParameters['vat'] != EcpayVatType.No:
                     arErrors.append("29:Invalid VatType.")
-
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         # 刪除items
         del arParameters['Items']
@@ -631,7 +630,7 @@ class ECPay_INVOICE_DELAY():
         'DelayFlag': '',
         'DelayDay': '',
         'Tsr': '',
-        'PayType': 2,
+        'PayType': '2',
         'PayAct': 'ECPAY',
         'NotifyURL': ''
     })
@@ -965,10 +964,12 @@ class ECPay_INVOICE_DELAY():
             # * 必填項目交易類別名稱預設不能為空值僅允許ECPAY
             arParameters['PayAct'] = 'ECPAY'
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         # 刪除items
         del arParameters['Items']
@@ -1196,10 +1197,12 @@ class ECPay_ALLOWANCE():
             # *含稅總金額
             arParameters['AllowanceAmount'] = int(arParameters['AllowanceAmount'])
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         # 刪除items
         del arParameters['Items']
@@ -1266,13 +1269,15 @@ class ECPay_INVOICE_VOID():
             arErrors.append('43:Reason is required.')
 
         # *字數限制在20(含)個字以內
-        if len(arParameters['Reason'].encode('utf-8')) > 20:
+        if len(arParameters['Reason']) > 20:
             arErrors.append('43:Reason max length as 20.')
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
     '''
@@ -1337,7 +1342,7 @@ class ECPay_ALLOWANCE_VOID():
             arErrors.append('43:Reason is required.')
 
         # *字數限制在20(含)個字以內
-        if len(arParameters['Reason'].encode('utf-8')) > 20:
+        if len(arParameters['Reason']) > 20:
             arErrors.append('43:Reason max length as 20.')
 
         # 44.折讓編號 AllowanceNo
@@ -1347,10 +1352,12 @@ class ECPay_ALLOWANCE_VOID():
         if len(arParameters['AllowanceNo']) != 0 and len(arParameters['AllowanceNo']) != 16:
             arErrors.append('44:AllowanceNo length as 16.')
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
 
@@ -1420,10 +1427,12 @@ class ECPay_INVOICE_SEARCH():
         if len(arParameters['RelateNumber']) > 30:
             arErrors.append('4:RelateNumber max langth as 30.')
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
 
@@ -1487,10 +1496,12 @@ class ECPay_INVOICE_VOID_SEARCH():
         if len(arParameters['RelateNumber']) > 30:
             arErrors.append('4:RelateNumber max langth as 30.')
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
 
@@ -1559,10 +1570,12 @@ class ECPay_ALLOWANCE_SEARCH():
         if len(arParameters['AllowanceNo']) != 0 and len(arParameters['AllowanceNo']) != 16:
              arErrors.append('44:AllowanceNo length as 16.')
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
 
@@ -1629,10 +1642,12 @@ class ECPay_ALLOWANCE_VOID_SEARCH():
         if len(arParameters['AllowanceNo']) != 0 and len(arParameters['AllowanceNo']) != 16:
             arErrors.append('44:AllowanceNo length as 16.')
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
 
@@ -1759,10 +1774,12 @@ class ECPay_INVOICE_NOTIFY():
         arParameters['Notified'] != EcpayNotifiedType.All:
             arErrors.append('49:Notified is required.')
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
 
@@ -1782,7 +1799,7 @@ class ECPay_INVOICE_TRIGGER():
         'MerchantID': '',
         'CheckMacValue': '',
         'Tsr': '',
-        'PayType': 2
+        'PayType': '2'
     })
     # 需要做urlencode的參數
     urlencode_field = dict({
@@ -1827,10 +1844,12 @@ class ECPay_INVOICE_TRIGGER():
         if arParameters['PayType'] != EcpayPayTypeCategory.Ecpay:
             arErrors.append("34:Invalid PayType.")
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
 
@@ -1885,10 +1904,12 @@ class ECPay_CHECK_MOBILE_BARCODE():
         if len(arParameters['BarCode']) != 8:
             arErrors.append("50:BarCode max length as 8.")
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
     '''
@@ -1944,10 +1965,12 @@ class ECPay_CHECK_LOVE_CODE():
         if len(arParameters['LoveCode']) > 7:
             arErrors.append("51:LoveCode max length as 7.")
 
-        if sys.getsizeof(arErrors) > 0:
+        try:
+            if sys.getsizeof(arErrors) > 0:
+                raise CustomException
+        except CustomException:
             br = '<br>'
             print br.join(arErrors)
-            Exception(br.join(arErrors))
 
         return arParameters
 
@@ -1957,4 +1980,6 @@ class ECPay_CHECK_LOVE_CODE():
 
     def check_exception(self, arParameters=dict):
         return arParameters
+
+
 
