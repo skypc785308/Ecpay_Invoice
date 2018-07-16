@@ -470,8 +470,4 @@ def test_check_love_code():
     print aReturn_Info['RtnMsg']
     assert aReturn_Info['RtnMsg'] == '執行成功'
 
-test_normal_invoice()
-
-
-
-
+test_invoice_notify()

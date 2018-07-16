@@ -164,7 +164,7 @@ class ECPay_Invoice_Send():
         if len(ServiceURL) == 0:
             arErrors.append('Invoice_Url is required.')
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
             print ''.join(arErrors)
@@ -569,7 +569,7 @@ class ECPay_INVOICE():
                 if arParameters['vat'] != EcpayVatType.Yes and arParameters['vat'] != EcpayVatType.No:
                     arErrors.append("29:Invalid VatType.")
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
             print ''.join(arErrors)
@@ -961,7 +961,7 @@ class ECPay_INVOICE_DELAY():
             arParameters['PayAct'] = 'ECPAY'
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1194,7 +1194,7 @@ class ECPay_ALLOWANCE():
             arParameters['AllowanceAmount'] = int(arParameters['AllowanceAmount'])
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1269,7 +1269,7 @@ class ECPay_INVOICE_VOID():
             arErrors.append('43:Reason max length as 20.')
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1349,7 +1349,7 @@ class ECPay_ALLOWANCE_VOID():
             arErrors.append('44:AllowanceNo length as 16.')
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1424,7 +1424,7 @@ class ECPay_INVOICE_SEARCH():
             arErrors.append('4:RelateNumber max langth as 30.')
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1493,7 +1493,7 @@ class ECPay_INVOICE_VOID_SEARCH():
             arErrors.append('4:RelateNumber max langth as 30.')
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1567,7 +1567,7 @@ class ECPay_ALLOWANCE_SEARCH():
              arErrors.append('44:AllowanceNo length as 16.')
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1639,7 +1639,7 @@ class ECPay_ALLOWANCE_VOID_SEARCH():
             arErrors.append('44:AllowanceNo length as 16.')
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1708,11 +1708,12 @@ class ECPay_INVOICE_NOTIFY():
             arErrors.append('37:InvoiceNo length as 10.')
 
         # 44.折讓編號 AllowanceNo
-        if len(arParameters['AllowanceNo']) == 0:
-            arErrors.append('44:AllowanceNo is required.')
-        # *若有值長度固定16字元
-        if len(arParameters['AllowanceNo']) != 0 and len(arParameters['AllowanceNo']) != 16:
-            arErrors.append('44:AllowanceNo length as 16.')
+        if arParameters['InvoiceTag'] == EcpayInvoiceTagType.Allowance or arParameters['InvoiceTag'] == EcpayInvoiceTagType.Allowance_Void:
+            if len(arParameters['AllowanceNo']) == 0:
+                arErrors.append('44:AllowanceNo is required.')
+            # *若有值長度固定16字元
+            if len(arParameters['AllowanceNo']) != 0 and len(arParameters['AllowanceNo']) != 16:
+                arErrors.append('44:AllowanceNo length as 16.')
 
         # 45.NotifyMail 發送電子信箱
         # *若客戶電子信箱有值時，則格式僅能為Email的標準格式
@@ -1771,7 +1772,7 @@ class ECPay_INVOICE_NOTIFY():
             arErrors.append('49:Notified is required.')
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1841,7 +1842,7 @@ class ECPay_INVOICE_TRIGGER():
             arErrors.append("34:Invalid PayType.")
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1901,7 +1902,7 @@ class ECPay_CHECK_MOBILE_BARCODE():
             arErrors.append("50:BarCode max length as 8.")
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
@@ -1962,7 +1963,7 @@ class ECPay_CHECK_LOVE_CODE():
             arErrors.append("51:LoveCode max length as 7.")
 
         try:
-            if sys.getsizeof(arErrors) > 0:
+            if len(arErrors) > 0:
                 raise CustomException
         except CustomException:
 
