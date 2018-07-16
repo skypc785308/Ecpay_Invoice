@@ -73,9 +73,8 @@ def test_normal_invoice():
     aReturn_Info = ecpay_invoice.Check_Out()
     print 'RelateNumber：' + str(RelateNumber)
     print aReturn_Info
-
     print aReturn_Info['RtnMsg']
-    print '發票號碼' + aReturn_Info['InvoiceNumber']
+    print '發票號碼：' + aReturn_Info['InvoiceNumber']
     assert aReturn_Info['RtnMsg'] == '開立發票成功'
 
 
@@ -470,6 +469,8 @@ def test_check_love_code():
     print aReturn_Info
     print aReturn_Info['RtnMsg']
     assert aReturn_Info['RtnMsg'] == '執行成功'
+
+test_normal_invoice()
 
 
 
