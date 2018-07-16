@@ -128,8 +128,8 @@ class ECPay_Invoice_Send():
         if 'CheckMacValue' in arParameters:
             CheckMacValue = ECPay_Invoice_Send.generate_checkmacvalue(arException, InvoiceObj_Return.none_verification, HashKey, HashIV)
             if CheckMacValue != arParameters['CheckMacValue']:
-                print '自己壓的' + CheckMacValue
-                print '系統回傳的' + arParameters['CheckMacValue'].encode('utf-8')
+                print '自己壓的：' + CheckMacValue
+                print '系統回傳的：' + arParameters['CheckMacValue'].encode('utf-8')
                 print '注意：壓碼錯誤'
                 Exception('注意：壓碼錯誤')
             else:
@@ -196,6 +196,7 @@ class ECPay_Invoice_Send():
         for key, val in none_verification.items():
             if key in sub_parameters:
                 del sub_parameters[key]
+        print sub_parameters
 
         sCheck_MacValue = ECPay_CheckMacValue.generate(sub_parameters, HashKey, HashIV, ECPay_EncryptType.ENC_MD5)
         return sCheck_MacValue
@@ -213,7 +214,7 @@ class ECPay_Invoice_Send():
         aParameters_Tmp = Parameters.split('&')
 
         for part in aParameters_Tmp:
-            paramName, paramValue = part.split('=')
+            paramName, paramValue = part.split('=', 1)
             aParameters[paramName] = paramValue
 
         return aParameters
@@ -227,7 +228,7 @@ class ECPay_Invoice_Send():
         for key, val in arParameters.items():
             if key in urlencode_field:
                 arParameters[key] = ECPay_CheckMacValue.restore_str_replace(arParameters[key])
-                arParameters[key] = urllib.unquote(val)
+                arParameters[key] = urllib.unquote_plus(val)
 
         return arParameters
 '''
@@ -440,7 +441,7 @@ class ECPay_INVOICE():
                     arErrors.append( "12:Offline Print should be Yes.")
 
         # 13.捐贈註記Donation
-        #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '0'
+        #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '2'
         if arParameters['Donation'] != EcpayDonation.Yes and arParameters['Donation'] != EcpayDonation.No:
             arErrors.append( "13:Invalid Donation.")
         # *若統一編號有值時，則VAL = '2'(不捐贈)
@@ -800,7 +801,7 @@ class ECPay_INVOICE_DELAY():
             if arParameters['Print'] != EcpayPrintMark.Yes:
                 arErrors.append( "12:CustomerIdentifier Print should be Yes.")
         # 13.捐贈註記Donation
-        #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '0'
+        #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '2'
         if arParameters['Donation'] != EcpayDonation.Yes and arParameters['Donation'] != EcpayDonation.No:
             arErrors.append( "13:Invalid Donation.")
         # *若統一編號有值時，則VAL = '2'(不捐贈)
@@ -1433,7 +1434,7 @@ class ECPay_INVOICE_SEARCH():
     def check_exception(self, arParameters=dict):
 
         if 'IIS_Customer_Email' in arParameters:
-            arParameters['arParameters'] = arParameters['arParameters'].replace('+',' ')
+            arParameters['IIS_Customer_Email'] = arParameters['IIS_Customer_Email'].replace('+', ' ')
         return arParameters
 '''
 *  G查詢作廢發票
@@ -1709,7 +1710,7 @@ class ECPay_INVOICE_NOTIFY():
                 arErrors.append('45:Invalid Email Format.')
 
         # *下述情況通知電子信箱不可為空值(發送方式為E-電子郵件)
-        if arParameters['Notify'] == EcpayNotifyType.Email and len(arParameters['NotifyMail'] == 0):
+        if arParameters['Notify'] == EcpayNotifyType.Email and len(arParameters['NotifyMail']) == 0:
             arErrors.append('39:NotifyMail is required.')
 
         # 46.通知手機號碼 NotifyPhone
@@ -1940,7 +1941,7 @@ class ECPay_CHECK_LOVE_CODE():
 
         # 51.LoveCode愛心碼
         # *必填 3-7碼
-        if len(arParameters['BarCode']) > 7:
+        if len(arParameters['LoveCode']) > 7:
             arErrors.append("51:LoveCode max length as 7.")
 
         if sys.getsizeof(arErrors) > 0:

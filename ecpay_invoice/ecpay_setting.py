@@ -301,6 +301,9 @@ class ECPay_CheckMacValue():
             if 'RtnMsg' in arParameters:
                 if type(arParameters['RtnMsg']).__name__ == 'unicode':
                     arParameters['RtnMsg'] = arParameters['RtnMsg'].encode('utf-8')
+            if 'II_Date' in arParameters:
+                if type(arParameters['II_Date']).__name__ == 'unicode':
+                    arParameters['II_Date'] = arParameters['II_Date'].encode('utf-8')
 
             sorted_dict = sorted(arParameters.items())
             #  組合字串
@@ -313,6 +316,7 @@ class ECPay_CheckMacValue():
             sMacValue = urllib.urlencode(sorted_dict)
 
             sMacValue = urllib.quote(sMacValue, '+%')
+
 
             # 轉成小寫
             sMacValue = sMacValue.lower()
@@ -336,7 +340,7 @@ class ECPay_CheckMacValue():
 
     @staticmethod
     def restore_str_replace(string):
-        mapping_dict = {'!': '%21', '*': '%2a', '(': '%28', ')': '%29'}
+        mapping_dict = {'!': '%21', '*': '%2a', '(': '%28', ')': '%29', '%252f': '%2f', '%253a': '%3a'}
         for key, val in mapping_dict.items():
             string = string.replace(key, val)
 
@@ -344,7 +348,7 @@ class ECPay_CheckMacValue():
 
     @staticmethod
     def do_str_replace(string):
-        mapping_dict = {'!': '%21', '*': '%2a', '(': '%28', ')': '%29'}
+        mapping_dict = {'!': '%21', '*': '%2a', '(': '%28', ')': '%29', '/': '%2F'}
         for key, val in mapping_dict.items():
             string = string.replace(val, key)
 
