@@ -22,11 +22,11 @@ def test_normal_invoice():
     # 商品資訊
     ecpay_invoice.Send['Items'].append({
         'ItemName': '商品名稱一',
-        'ItemCount': 1,
+        'ItemCount': 10,
         'ItemWord': '批',
-        'ItemPrice': 50,
+        'ItemPrice': 0.5,
         'ItemTaxType': 1,
-        'ItemAmount': 50,
+        'ItemAmount': 5,
         'ItemRemark': '商品備註一'
     })
     ecpay_invoice.Send['Items'].append({
@@ -56,7 +56,7 @@ def test_normal_invoice():
     ecpay_invoice.Send['CustomerName'] = ''
     ecpay_invoice.Send['CustomerAddr'] = ''
     ecpay_invoice.Send['CustomerPhone'] = ''
-    ecpay_invoice.Send['CustomerEmail'] = 'test@local.com'
+    ecpay_invoice.Send['CustomerEmail'] = 'test@localcom'
     ecpay_invoice.Send['ClearanceMark'] = ''
     ecpay_invoice.Send['Print'] = '0'
     ecpay_invoice.Send['Donation'] = '0'
@@ -64,7 +64,7 @@ def test_normal_invoice():
     ecpay_invoice.Send['CarruerType'] = ''
     ecpay_invoice.Send['CarruerNum'] = ''
     ecpay_invoice.Send['TaxType'] = 1
-    ecpay_invoice.Send['SalesAmount'] = 400
+    ecpay_invoice.Send['SalesAmount'] = 355
     ecpay_invoice.Send['InvoiceRemark'] = 'SDK TEST Python V1.0.180302'
     ecpay_invoice.Send['InvType'] = '07'
     ecpay_invoice.Send['vat'] = ''
@@ -470,4 +470,4 @@ def test_check_love_code():
     print aReturn_Info['RtnMsg']
     assert aReturn_Info['RtnMsg'] == '執行成功'
 
-test_invoice_notify()
+test_normal_invoice()

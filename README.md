@@ -5,4 +5,10 @@
 利用pip
 
 .. code-block:: python
-    pip install ecpay_invoice
+    >>>pip install ecpay_invoice
+
+
+其他範例請看demo檔
+change log:
+2018-07-17 更新商品單價可以為小數，諾驗證沒有通過會停止程式
+

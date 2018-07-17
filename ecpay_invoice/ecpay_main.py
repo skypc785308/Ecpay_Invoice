@@ -168,6 +168,7 @@ class ECPay_Invoice_Send():
                 raise CustomException
         except CustomException:
             print ''.join(arErrors)
+            raise
     '''
     *4處理需要轉換為urlencode的參數
     '''
@@ -547,8 +548,11 @@ class ECPay_INVOICE():
                     if len(val['ItemWord']) > 6:
                         arErrors.append('22:ItemWord max length as 6.')
                     # *ItemPrice數字判斷
-                    if re.match('^[-0-9]*$', str(val['ItemPrice'])) == None:
-                        arErrors.append('23:Invalid ItemPrice.A')
+                    # 不是小數
+                    if re.match('^[-+]?[0-9]*\.[0-9]+$', str(val['ItemPrice'])) == None:
+                        # 又不是整數，跳出錯誤訊息
+                        if re.match('^[0-9]*$',str(val['ItemPrice'])) == None:
+                            arErrors.append('23:Invalid ItemPrice.A')
                     # *ItemAmount數字判斷
                     if re.match('^[-0-9]*$', str(val['ItemAmount']))== None:
                         arErrors.append('25:Invalid ItemAmount.B')
@@ -573,6 +577,7 @@ class ECPay_INVOICE():
                 raise CustomException
         except CustomException:
             print ''.join(arErrors)
+            raise
 
         # 刪除items
         del arParameters['Items']
@@ -907,8 +912,10 @@ class ECPay_INVOICE_DELAY():
                     if len(val['ItemWord']) > 6:
                         arErrors.append('22:ItemWord max length as 6.')
                     # *ItemPrice數字判斷
-                    if re.match('^[-0-9]*$', str(val['ItemPrice'])) == None:
-                        arErrors.append('23:Invalid ItemPrice.A')
+                    if re.match('^[-+]?[0-9]*\.[0-9]+$', str(val['ItemPrice'])) == None:
+                        # 又不是整數，跳出錯誤訊息
+                        if re.match('^[0-9]*$',str(val['ItemPrice'])) == None:
+                            arErrors.append('23:Invalid ItemPrice.A')
                     # *ItemAmount數字判斷
                     if re.match('^[-0-9]*$', str(val['ItemAmount']))== None:
                         arErrors.append('25:Invalid ItemAmount.B')
@@ -966,6 +973,7 @@ class ECPay_INVOICE_DELAY():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         # 刪除items
         del arParameters['Items']
@@ -1127,8 +1135,10 @@ class ECPay_ALLOWANCE():
                     if len(val['ItemWord']) > 6:
                         arErrors.append('22:ItemWord max length as 6.')
                     # *ItemPrice數字判斷
-                    if re.match('^[-0-9]*$', str(val['ItemPrice'])) == None:
-                        arErrors.append('23:Invalid ItemPrice.A')
+                    if re.match('^[-+]?[0-9]*\.[0-9]+$', str(val['ItemPrice'])) == None:
+                        # 又不是整數，跳出錯誤訊息
+                        if re.match('^[0-9]*$',str(val['ItemPrice'])) == None:
+                            arErrors.append('23:Invalid ItemPrice.A')
                     # *ItemAmount數字判斷
                     if re.match('^[-0-9]*$', str(val['ItemAmount'])) == None:
                         arErrors.append('25:Invalid ItemAmount.B')
@@ -1199,6 +1209,7 @@ class ECPay_ALLOWANCE():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         # 刪除items
         del arParameters['Items']
@@ -1274,6 +1285,7 @@ class ECPay_INVOICE_VOID():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
     '''
@@ -1354,6 +1366,7 @@ class ECPay_ALLOWANCE_VOID():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
 
@@ -1429,6 +1442,7 @@ class ECPay_INVOICE_SEARCH():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
 
@@ -1498,6 +1512,7 @@ class ECPay_INVOICE_VOID_SEARCH():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
 
@@ -1572,6 +1587,7 @@ class ECPay_ALLOWANCE_SEARCH():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
 
@@ -1644,6 +1660,7 @@ class ECPay_ALLOWANCE_VOID_SEARCH():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
 
@@ -1777,6 +1794,7 @@ class ECPay_INVOICE_NOTIFY():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
 
@@ -1847,6 +1865,7 @@ class ECPay_INVOICE_TRIGGER():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
 
@@ -1907,6 +1926,7 @@ class ECPay_CHECK_MOBILE_BARCODE():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
     '''
@@ -1968,6 +1988,7 @@ class ECPay_CHECK_LOVE_CODE():
         except CustomException:
 
             print ''.join(arErrors)
+            raise
 
         return arParameters
 
