@@ -19,4 +19,3 @@ ecpay_invoice.Send['BarCode'] = '/RXNOFER'
 aReturn_Info = ecpay_invoice.Check_Out()
 print aReturn_Info
 print aReturn_Info['RtnMsg']
-assert aReturn_Info['RtnMsg'] == '執行成功'

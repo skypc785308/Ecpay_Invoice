@@ -23,4 +23,3 @@ ecpay_invoice.Send['Notified'] = 'C'
 aReturn_Info = ecpay_invoice.Check_Out()
 print aReturn_Info
 print aReturn_Info['RtnMsg']
-assert aReturn_Info['RtnMsg'] == '成功.'

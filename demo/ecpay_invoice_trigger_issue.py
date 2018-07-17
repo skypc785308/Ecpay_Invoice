@@ -20,4 +20,3 @@ ecpay_invoice.Send['PayType'] = '2'
 aReturn_Info = ecpay_invoice.Check_Out()
 print aReturn_Info
 print aReturn_Info['RtnMsg']
-assert aReturn_Info['RtnMsg'] == '延後開立成功'

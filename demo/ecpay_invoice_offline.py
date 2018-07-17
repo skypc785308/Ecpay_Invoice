@@ -75,4 +75,3 @@ print aReturn_Info
 
 print aReturn_Info['RtnMsg']
 print '發票號碼' + aReturn_Info['InvoiceNumber']
-assert aReturn_Info['RtnMsg'] == '開立發票成功'

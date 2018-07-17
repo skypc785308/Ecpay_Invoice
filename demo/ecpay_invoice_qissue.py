@@ -19,4 +19,3 @@ ecpay_invoice.Send['RelateNumber'] = 'SocialOrder320180716015434'
 aReturn_Info = ecpay_invoice.Check_Out()
 print aReturn_Info
 print aReturn_Info['RtnMsg']
-assert aReturn_Info['RtnMsg'] == '查詢發票成功'

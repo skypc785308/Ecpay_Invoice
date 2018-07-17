@@ -21,4 +21,3 @@ ecpay_invoice.Send['Reason'] = 'ISSUE INVALID TEST'
 aReturn_Info = ecpay_invoice.Check_Out()
 print aReturn_Info
 print aReturn_Info['RtnMsg']
-assert aReturn_Info['RtnMsg'] == '作廢發票成功'
