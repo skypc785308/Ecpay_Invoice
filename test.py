@@ -56,7 +56,7 @@ def test_normal_invoice():
     ecpay_invoice.Send['CustomerName'] = ''
     ecpay_invoice.Send['CustomerAddr'] = ''
     ecpay_invoice.Send['CustomerPhone'] = ''
-    ecpay_invoice.Send['CustomerEmail'] = 'test@localcom'
+    ecpay_invoice.Send['CustomerEmail'] = 'test@local.com'
     ecpay_invoice.Send['ClearanceMark'] = ''
     ecpay_invoice.Send['Print'] = '0'
     ecpay_invoice.Send['Donation'] = '0'
