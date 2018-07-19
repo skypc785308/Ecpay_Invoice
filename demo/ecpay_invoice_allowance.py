@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ecpay_invoice.ecpay_main import *
+'''
+* 開立折讓，範例程式
+'''
 
+# 1.載入SDK程式與建立物件
+from ecpay_invoice.ecpay_main import *
 import time
 import random
 
@@ -39,8 +43,8 @@ ecpay_invoice.Send['AllowanceAmount'] = 100
 
 # 4. 送出
 aReturn_Info = ecpay_invoice.Check_Out()
+# 5. 返回
 print 'RelateNumber：' + str(RelateNumber)
 print aReturn_Info
-
 print aReturn_Info['RtnMsg']
 print '折讓編號：'+ aReturn_Info['IA_Allow_No']

@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+* 一般開立發票，範例程式
+'''
 
+# 1.載入SDK程式與建立物件
 import random
 from ecpay_invoice.ecpay_main import *
 
@@ -68,6 +72,8 @@ ecpay_invoice.Send['vat'] = ''
 
 # 4. 送出
 aReturn_Info = ecpay_invoice.Check_Out()
+
+# 5. 返回
 print 'RelateNumber：' + str(RelateNumber)
 print aReturn_Info
 print aReturn_Info['RtnMsg']
