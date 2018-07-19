@@ -1,22 +1,23 @@
 ECPAY電子發票Python模組
 =====================
 
+綠界電子發票建置中...
 
 安裝
----
+----
 
 
 利用pip
 
 .. code-block:: python
 
-    >>>pip install ecpay_invoice
+    pip install ecpay_invoice
 
 匯入模組
 
 .. code-block:: python
 
-    >>>from ecpay_invoice.ecpay_main import *
+    from ecpay_invoice.ecpay_main import *
 
 其他範例請看demo
 
