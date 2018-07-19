@@ -1,8 +1,8 @@
-.. .. image:: https://pypip.in/v/zipcodetw/badge.png?v=0.5.7
-..    :target: https://pypi.python.org/pypi/zipcodetw
+.. .. image:: https://pypip.in/v/ecpay-invoice/badge.png?v=0.9
+..    :target: https://pypi.org/pypi/ecpay-invoice
 ..
-.. .. image:: https://pypip.in/d/zipcodetw/badge.png?v=0.5.7
-..    :target: https://pypi.python.org/pypi/zipcodetw
+.. .. image:: https://pypip.in/d/ecpay-invoice/badge.png?v=0.9
+..    :target: https://pypi.org/pypi/ecpay-invoice
 
 
 ECPAY電子發票Python模組
