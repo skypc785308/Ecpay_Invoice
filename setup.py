@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 import io
 
-VERSION = '0.9'
+VERSION = '1.0'
 
 with io.open("README.rst", encoding='utf-8') as f:
     long_description = f.read()
@@ -22,12 +22,11 @@ setup(
     include_package_data=True,
     license='BSD License',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Operating System :: OS Independent',
-        'Intended Audience :: Developers',
+        'Intended Audience :: Financial and Insurance Industry',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: Implementation',
         'Programming Language :: Python :: 2.7',
         'Topic :: Software Development :: Libraries'
     ],
