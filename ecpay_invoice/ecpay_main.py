@@ -360,7 +360,8 @@ class ECPay_INVOICE():
         # 6.統一編號判斷CustomerIdentifier
         # * 若統一編號有值時，則固定長度為數字8碼
         if len(arParameters['CustomerIdentifier']) > 0:
-            if re.match("^[0-9]8$", arParameters['CustomerIdentifier']) == None:
+            print(len(arParameters['CustomerIdentifier']))
+            if re.match("^[0-9]{8}$", arParameters['CustomerIdentifier']) == None:
                 arErrors.append('6:CustomerIdentifier length should be 8.')
 
         # 7.客戶名稱CustomerName
@@ -428,7 +429,7 @@ class ECPay_INVOICE():
         # *若統一編號有值時，則VAL = '1'(列印)
         if len(arParameters['CustomerIdentifier']) > 0:
             if arParameters['Print'] != EcpayPrintMark.Yes:
-                arErrors.append( "12:CustomerIdentifier Print should be Yes.")
+                arErrors.append("12:CustomerIdentifier Print should be Yes.")
         # 線下列印判斷
         #  1200079當線下廠商開立發票無載具且無統一編號時，必須列印。
         if arParameters['OnLine'] == False:
@@ -470,11 +471,11 @@ class ECPay_INVOICE():
                 arErrors.append("16:Please remove CarruerNum.")
         # *載具類別為買受人自然人憑證(Citizen)時，請設定自然人憑證號碼，前2碼為大小寫英文，後14碼為數字
         elif arParameters['CarruerType'] == EcpayCarruerType.Citizen:
-            if re.match('/^[a-zA-Z]2\d14$/', arParameters['CarruerNum']) == None:
+            if re.match('/^[a-zA-Z]{2}\d{14}$/', arParameters['CarruerNum']) == None:
                 arErrors.append("16:Invalid CarruerNum.")
         # *載具類別為買受人手機條碼(Cellphone)時，請設定手機條碼，第1碼為「 / 」，後7碼為大小寫英文、數字、「+」、「-」或「.」
         elif arParameters['CarruerType'] == EcpayCarruerType.Cellphone:
-            if re.match('/^\/1[0-9a-zA-Z+-.]7$/', arParameters['CarruerNum']) == None:
+            if re.match('/^\/{1}[0-9a-zA-Z+-.]{7}$/', arParameters['CarruerNum']) == None:
                 arErrors.append("16:Invalid CarruerNum.")
         else:
             arErrors.append("16:Please remove CarruerNum.")
@@ -521,11 +522,14 @@ class ECPay_INVOICE():
                     bError_Tag = True
                     arErrors.append('23:Invalid ItemPrice.')
                     break
+
+                # 檢查TaxType是否為'9'，並檢查是否有設定個別商品的課稅類別
                 bFind_Tag = str(val['ItemTaxType']).find('|')
                 if bFind_Tag != -1 or not val['ItemTaxType']:
-                    bError_Tag = True
-                    arErrors.append('24:Invalid ItemTaxType.')
-                    break
+                    if arParameters['TaxType'] == EcpayTaxType.Mix:
+                        bError_Tag = True
+                        arErrors.append('24:Invalid ItemTaxType.')
+                        break
                 bFind_Tag = str(val['ItemAmount']).find('|')
                 if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
@@ -731,7 +735,7 @@ class ECPay_INVOICE_DELAY():
         # 6.統一編號判斷CustomerIdentifier
         # * 若統一編號有值時，則固定長度為數字8碼
         if len(arParameters['CustomerIdentifier']) > 0:
-            if re.match("^[0-9]8$", arParameters['CustomerIdentifier']) == None:
+            if re.match("^[0-9]{8}$", arParameters['CustomerIdentifier']) == None:
                 arErrors.append('6:CustomerIdentifier length should be 8.')
 
         # 7.客戶名稱CustomerName
@@ -811,7 +815,7 @@ class ECPay_INVOICE_DELAY():
         # 14.愛心碼LoveCode(預設為空字串)
         #  *若捐贈註記 = '1'(捐贈)時，則須有值
         if arParameters['Donation'] == EcpayDonation.Yes:
-            if re.match("/^([xX]1[0-9]2,6|[0-9]3,7)$/", arParameters['LoveCode']) == None:
+            if re.match("/^([xX]{1}[0-9]{2,6}|[0-9]{3,7})$/", arParameters['LoveCode']) == None:
                 arErrors.append( "14:Invalid LoveCode.")
         else:
             if len(arParameters['LoveCode']) > 0:
@@ -834,11 +838,11 @@ class ECPay_INVOICE_DELAY():
                 arErrors.append("16:Please remove CarruerNum.")
         # *載具類別為買受人自然人憑證(Citizen)時，請設定自然人憑證號碼，前2碼為大小寫英文，後14碼為數字
         elif arParameters['CarruerType'] == EcpayCarruerType.Citizen:
-            if re.match('/^[a-zA-Z]2\d14$/', arParameters['CarruerNum']) == None:
+            if re.match('/^[a-zA-Z]{2}\d{14}$/', arParameters['CarruerNum']) == None:
                 arErrors.append("16:Invalid CarruerNum.")
         # *載具類別為買受人手機條碼(Cellphone)時，請設定手機條碼，第1碼為「 / 」，後7碼為大小寫英文、數字、「+」、「-」或「.」
         elif arParameters['CarruerType'] == EcpayCarruerType.Cellphone:
-            if re.match('/^\/1[0-9a-zA-Z+-.]7$/', arParameters['CarruerNum']) == None:
+            if re.match('/^\/{1}[0-9a-zA-Z+-.]{7}$/', arParameters['CarruerNum']) == None:
                 arErrors.append("16:Invalid CarruerNum.")
         else:
             arErrors.append("16:Please remove CarruerNum.")
@@ -887,9 +891,10 @@ class ECPay_INVOICE_DELAY():
                     break
                 bFind_Tag = str(val['ItemTaxType']).find('|')
                 if bFind_Tag != -1 or not val['ItemTaxType']:
-                    bError_Tag = True
-                    arErrors.append('24:Invalid ItemTaxType.')
-                    break
+                    if arParameters['TaxType'] == EcpayTaxType.Mix:
+                        bError_Tag = True
+                        arErrors.append('24:Invalid ItemTaxType.')
+                        break
                 bFind_Tag = str(val['ItemAmount']).find('|')
                 if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
@@ -1116,9 +1121,10 @@ class ECPay_ALLOWANCE():
                     break
                 bFind_Tag = str(val['ItemTaxType']).find('|')
                 if bFind_Tag != -1 or not val['ItemTaxType']:
-                    bError_Tag = True
-                    arErrors.append('24:Invalid ItemTaxType.')
-                    break
+                    if arParameters['TaxType'] == EcpayTaxType.Mix:
+                        bError_Tag = True
+                        arErrors.append('24:Invalid ItemTaxType.')
+                        break
                 bFind_Tag = str(val['ItemAmount']).find('|')
                 if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
