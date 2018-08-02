@@ -3,6 +3,7 @@
 
 '''
 * 一般開立發票，範例程式
+* 除了*SalesAmount與*TimeStamp 為int，其他參數皆為字串
 '''
 
 # 1.載入SDK程式與建立物件
@@ -26,7 +27,7 @@ ecpay_invoice.Send['Items'].append({
     'ItemCount': 1,
     'ItemWord': '批',
     'ItemPrice': 50,
-    'ItemTaxType': '',
+    'ItemTaxType': '1',
     'ItemAmount': 50,
     'ItemRemark': '商品備註一'
 })
@@ -35,7 +36,7 @@ ecpay_invoice.Send['Items'].append({
     'ItemCount': 1,
     'ItemWord': '批',
     'ItemPrice': 150,
-    'ItemTaxType': '',
+    'ItemTaxType': '1',
     'ItemAmount': 150,
     'ItemRemark': '商品備註二'
 })
@@ -44,7 +45,7 @@ ecpay_invoice.Send['Items'].append({
     'ItemCount': 1,
     'ItemWord': '批',
     'ItemPrice': 200,
-    'ItemTaxType': '',
+    'ItemTaxType': '1',
     'ItemAmount': 200,
     'ItemRemark': '商品備註三'
 })
@@ -59,14 +60,14 @@ ecpay_invoice.Send['CustomerAddr'] = '123'
 ecpay_invoice.Send['CustomerPhone'] = ''
 ecpay_invoice.Send['CustomerEmail'] = 'test@local.com'
 ecpay_invoice.Send['ClearanceMark'] = ''
-ecpay_invoice.Send['Print'] = '1'
+ecpay_invoice.Send['Print'] = '0'
 ecpay_invoice.Send['Donation'] = '0'
 ecpay_invoice.Send['LoveCode'] = ''
 ecpay_invoice.Send['CarruerType'] = ''
 ecpay_invoice.Send['CarruerNum'] = ''
 ecpay_invoice.Send['TaxType'] = '1'
 ecpay_invoice.Send['SalesAmount'] = 400
-ecpay_invoice.Send['InvoiceRemark'] = 'SDK TEST Python V1.0.180302'
+ecpay_invoice.Send['InvoiceRemark'] = 'SDK TEST Python V1.0.3'
 ecpay_invoice.Send['InvType'] = '07'
 ecpay_invoice.Send['vat'] = ''
 

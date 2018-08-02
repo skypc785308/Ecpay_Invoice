@@ -3,6 +3,7 @@
 
 '''
 * 延遲開立發票，範例程式
+* 除了*SalesAmount與*TimeStamp 為int，其他參數皆為字串
 '''
 
 # 1.載入SDK程式與建立物件
@@ -28,7 +29,7 @@ ecpay_invoice.Send['Items'].append({
     'ItemCount': 1,
     'ItemWord': '批',
     'ItemPrice': 100,
-    'ItemTaxType': '',
+    'ItemTaxType': '1',
     'ItemAmount': 100,
     'ItemRemark': '商品備註一'
 })
@@ -37,7 +38,7 @@ ecpay_invoice.Send['Items'].append({
     'ItemCount': 2,
     'ItemWord': '件',
     'ItemPrice': 200,
-    'ItemTaxType': '',
+    'ItemTaxType': '1',
     'ItemAmount': 400,
     'ItemRemark': '商品備註二'
 })
@@ -46,20 +47,20 @@ RelateNumber = 'ECPAY' + time.strftime("%Y%m%d%H%M%S", time.localtime()) +\
    str(random.randint(1000000000, 2147483647))  # 產生測試用自訂訂單編號
 ecpay_invoice.Send['RelateNumber'] = RelateNumber
 ecpay_invoice.Send['CustomerID'] = ''
-ecpay_invoice.Send['CustomerIdentifier'] = ''
-ecpay_invoice.Send['CustomerName'] = ''
-ecpay_invoice.Send['CustomerAddr'] = ''
+ecpay_invoice.Send['CustomerIdentifier'] = '12345678'
+ecpay_invoice.Send['CustomerName'] = '123'
+ecpay_invoice.Send['CustomerAddr'] = '123'
 ecpay_invoice.Send['CustomerPhone'] = ''
 ecpay_invoice.Send['CustomerEmail'] = 'test@localhost.com'
 ecpay_invoice.Send['ClearanceMark'] = ''
-ecpay_invoice.Send['Print'] = '0'
+ecpay_invoice.Send['Print'] = '1'
 ecpay_invoice.Send['Donation'] = '0'
 ecpay_invoice.Send['LoveCode'] = ''
 ecpay_invoice.Send['CarruerType'] = ''
 ecpay_invoice.Send['CarruerNum'] = ''
-ecpay_invoice.Send['TaxType'] = '3'
+ecpay_invoice.Send['TaxType'] = '1'
 ecpay_invoice.Send['SalesAmount'] = 500
-ecpay_invoice.Send['InvoiceRemark'] = 'SDK TEST Python V1.0.180302'
+ecpay_invoice.Send['InvoiceRemark'] = 'SDK TEST Python V1.0.3'
 ecpay_invoice.Send['InvType'] = '07'
 ecpay_invoice.Send['DelayFlag'] = '1'
 ecpay_invoice.Send['DelayDay'] = '1'

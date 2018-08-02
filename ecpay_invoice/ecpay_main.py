@@ -367,6 +367,11 @@ class ECPay_INVOICE():
             if re.match("^[0-9]{8}$", arParameters['CustomerIdentifier']) == None:
                 arErrors.append('6:CustomerIdentifier length should be 8.')
 
+        # 6.1 * 若列印註記 = '1'(列印)時，則統一編號須有值
+        if arParameters['Print'] == EcpayPrintMark.Yes:
+            if len(arParameters['CustomerIdentifier']) == 0:
+                arErrors.append('6:CustomerIdentifier is required.')
+
         # 7.客戶名稱CustomerName
         # x僅能為中英數字格式
         # * 若列印註記 = '1'(列印)時，則客戶名稱須有值
@@ -438,7 +443,7 @@ class ECPay_INVOICE():
         if arParameters['OnLine'] == False:
             if arParameters['CarruerType'] == EcpayCarruerType.No and len(arParameters['CustomerIdentifier']) == 0:
                 if arParameters['Print'] != EcpayPrintMark.Yes:
-                    arErrors.append( "12:Offline Print should be Yes.")
+                    arErrors.append("12:Offline Print should be Yes.")
 
         # 13.捐贈註記Donation
         #  *固定給定下述預設值若為捐贈時，則VAL = '1'，若為不捐贈時，則VAL = '2'
@@ -526,13 +531,11 @@ class ECPay_INVOICE():
                     arErrors.append('23:Invalid ItemPrice.')
                     break
 
-                # 檢查TaxType是否為'9'，並檢查是否有設定個別商品的課稅類別
                 bFind_Tag = str(val['ItemTaxType']).find('|')
                 if bFind_Tag != -1 or not val['ItemTaxType']:
-                    if arParameters['TaxType'] == EcpayTaxType.Mix:
-                        bError_Tag = True
-                        arErrors.append('24:Invalid ItemTaxType.')
-                        break
+                    bError_Tag = True
+                    arErrors.append('24:Invalid ItemTaxType.')
+                    break
                 bFind_Tag = str(val['ItemAmount']).find('|')
                 if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
@@ -740,11 +743,16 @@ class ECPay_INVOICE_DELAY():
             if re.match("^[0-9]{8}$", arParameters['CustomerIdentifier']) == None:
                 arErrors.append('6:CustomerIdentifier length should be 8.')
 
+        # 6.1 * 若列印註記 = '1'(列印)時，則統一編號須有值
+        if arParameters['Print'] == EcpayPrintMark.Yes:
+            if len(arParameters['CustomerIdentifier']) == 0:
+                arErrors.append('6:CustomerIdentifier is required.')
+
         # 7.客戶名稱CustomerName
         # x僅能為中英數字格式
         # * 若列印註記 = '1'(列印)時，則客戶名稱須有值
         if arParameters['Print'] == EcpayPrintMark.Yes:
-            if len(arParameters['CustomerName']) == 0 and arParameters['OnLine']:
+            if len(arParameters['CustomerName']) == 0:
                 arErrors.append('7:CustomerName is required.')
         # *預設最大長度為30碼
         if len(arParameters['CustomerName']) > 30:
@@ -753,7 +761,7 @@ class ECPay_INVOICE_DELAY():
         # 8.客戶地址 CustomerAddr(UrlEncode, 預設為空字串)
         #  *若列印註記 = '1'(列印)時，則客戶地址須有值
         if arParameters['Print'] == EcpayPrintMark.Yes:
-            if len(arParameters['CustomerAddr']) == 0 and arParameters['OnLine']:
+            if len(arParameters['CustomerAddr']) == 0:
                 arErrors.append("8:CustomerAddr is required.")
         # *預設最大長度為100碼
         if len(arParameters['CustomerAddr']) > 100:
@@ -779,7 +787,7 @@ class ECPay_INVOICE_DELAY():
 
         # 9.10.
         #  *若客戶手機號碼為空值時，則客戶電子信箱不可為空值
-        if len(arParameters['CustomerPhone']) == 0 and len(arParameters['CustomerEmail']) == 0 and arParameters['OnLine']:
+        if len(arParameters['CustomerPhone']) == 0 and len(arParameters['CustomerEmail']) == 0:
             arErrors.append("9-10:CustomerPhone or CustomerEmail is required.")
 
         # 11.通關方式ClearanceMark(預設為空字串)
@@ -893,10 +901,9 @@ class ECPay_INVOICE_DELAY():
                     break
                 bFind_Tag = str(val['ItemTaxType']).find('|')
                 if bFind_Tag != -1 or not val['ItemTaxType']:
-                    if arParameters['TaxType'] == EcpayTaxType.Mix:
-                        bError_Tag = True
-                        arErrors.append('24:Invalid ItemTaxType.')
-                        break
+                    bError_Tag = True
+                    arErrors.append('24:Invalid ItemTaxType.')
+                    break
                 bFind_Tag = str(val['ItemAmount']).find('|')
                 if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
