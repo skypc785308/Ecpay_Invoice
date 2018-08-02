@@ -6,9 +6,14 @@ import sys
 import re
 from ecpay_setting import *
 
+
 class CustomException(Exception):
-   """Base class for other exceptions"""
-   pass
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
 
 
 class EcpayInvoice():
@@ -165,9 +170,8 @@ class ECPay_Invoice_Send():
             arErrors.append('Invoice_Url is required.')
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-            print ''.join(arErrors)
             raise
     '''
     *4處理需要轉換為urlencode的參數
@@ -360,7 +364,6 @@ class ECPay_INVOICE():
         # 6.統一編號判斷CustomerIdentifier
         # * 若統一編號有值時，則固定長度為數字8碼
         if len(arParameters['CustomerIdentifier']) > 0:
-            print(len(arParameters['CustomerIdentifier']))
             if re.match("^[0-9]{8}$", arParameters['CustomerIdentifier']) == None:
                 arErrors.append('6:CustomerIdentifier length should be 8.')
 
@@ -578,9 +581,8 @@ class ECPay_INVOICE():
                     arErrors.append("29:Invalid VatType.")
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-            print ''.join(arErrors)
             raise
 
         # 刪除items
@@ -974,10 +976,8 @@ class ECPay_INVOICE_DELAY():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         # 刪除items
@@ -1211,10 +1211,8 @@ class ECPay_ALLOWANCE():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         # 刪除items
@@ -1287,10 +1285,8 @@ class ECPay_INVOICE_VOID():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1368,10 +1364,8 @@ class ECPay_ALLOWANCE_VOID():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1444,10 +1438,8 @@ class ECPay_INVOICE_SEARCH():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1514,10 +1506,8 @@ class ECPay_INVOICE_VOID_SEARCH():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1589,10 +1579,8 @@ class ECPay_ALLOWANCE_SEARCH():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1662,10 +1650,8 @@ class ECPay_ALLOWANCE_VOID_SEARCH():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1796,10 +1782,8 @@ class ECPay_INVOICE_NOTIFY():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1867,10 +1851,8 @@ class ECPay_INVOICE_TRIGGER():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1928,10 +1910,8 @@ class ECPay_CHECK_MOBILE_BARCODE():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
@@ -1990,10 +1970,8 @@ class ECPay_CHECK_LOVE_CODE():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException
+                raise CustomException(''.join(arErrors))
         except CustomException:
-
-            print ''.join(arErrors)
             raise
 
         return arParameters
