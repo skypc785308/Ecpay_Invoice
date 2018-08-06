@@ -170,7 +170,7 @@ class ECPay_Invoice_Send():
             arErrors.append('Invoice_Url is required.')
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
     '''
@@ -363,9 +363,13 @@ class ECPay_INVOICE():
 
         # 6.統一編號判斷CustomerIdentifier
         # * 若統一編號有值時，則固定長度為數字8碼
+        # * 判斷統一編號是否都為數字
         if len(arParameters['CustomerIdentifier']) > 0:
-            if re.match("^[0-9]{8}$", arParameters['CustomerIdentifier']) == None:
+            if len(arParameters['CustomerIdentifier']) != 8:
                 arErrors.append('6:CustomerIdentifier length should be 8.')
+
+            if re.match("^[0-9]*$", arParameters['CustomerIdentifier']) == None:
+                arErrors.append('6:Invalid CustomerIdentifier.')
 
         # 6.1 * 若列印註記 = '1'(列印)時，則統一編號須有值
         if arParameters['Print'] == EcpayPrintMark.Yes:
@@ -456,11 +460,11 @@ class ECPay_INVOICE():
         # 14.愛心碼LoveCode(預設為空字串)
         #  *若捐贈註記 = '1'(捐贈)時，則須有值
         if arParameters['Donation'] == EcpayDonation.Yes:
-            if re.match("/^([xX]1[0-9]2,6|[0-9]3,7)$/", arParameters['LoveCode']) == None:
-                arErrors.append( "14:Invalid LoveCode.")
+            if re.match("/^([xX]{1}[0-9]{2,6}|[0-9]{3,7})$/", arParameters['LoveCode']) == None:
+                arErrors.append("14:Invalid LoveCode.")
         else:
             if len(arParameters['LoveCode']) > 0:
-                arErrors.append( "14:Please remove LoveCode.")
+                arErrors.append("14:Please remove LoveCode.")
 
         # 15.載具類別CarruerType(預設為None)
         # *固定給定下述預設值None、Member、Cellphone
@@ -479,11 +483,11 @@ class ECPay_INVOICE():
                 arErrors.append("16:Please remove CarruerNum.")
         # *載具類別為買受人自然人憑證(Citizen)時，請設定自然人憑證號碼，前2碼為大小寫英文，後14碼為數字
         elif arParameters['CarruerType'] == EcpayCarruerType.Citizen:
-            if re.match('/^[a-zA-Z]{2}\d{14}$/', arParameters['CarruerNum']) == None:
+            if re.match('^[a-zA-Z]{2}\d{14}$', arParameters['CarruerNum']) == None:
                 arErrors.append("16:Invalid CarruerNum.")
         # *載具類別為買受人手機條碼(Cellphone)時，請設定手機條碼，第1碼為「 / 」，後7碼為大小寫英文、數字、「+」、「-」或「.」
         elif arParameters['CarruerType'] == EcpayCarruerType.Cellphone:
-            if re.match('/^\/{1}[0-9a-zA-Z+-.]{7}$/', arParameters['CarruerNum']) == None:
+            if re.match('^\/{1}[0-9a-zA-Z+-.]{7}$', arParameters['CarruerNum']) == None:
                 arErrors.append("16:Invalid CarruerNum.")
         else:
             arErrors.append("16:Please remove CarruerNum.")
@@ -584,7 +588,7 @@ class ECPay_INVOICE():
                     arErrors.append("29:Invalid VatType.")
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -740,8 +744,11 @@ class ECPay_INVOICE_DELAY():
         # 6.統一編號判斷CustomerIdentifier
         # * 若統一編號有值時，則固定長度為數字8碼
         if len(arParameters['CustomerIdentifier']) > 0:
-            if re.match("^[0-9]{8}$", arParameters['CustomerIdentifier']) == None:
+            if len(arParameters['CustomerIdentifier']) != 8:
                 arErrors.append('6:CustomerIdentifier length should be 8.')
+
+            if re.match("^[0-9]*$", arParameters['CustomerIdentifier']) == None:
+                arErrors.append('6:Invalid CustomerIdentifier.')
 
         # 6.1 * 若列印註記 = '1'(列印)時，則統一編號須有值
         if arParameters['Print'] == EcpayPrintMark.Yes:
@@ -848,11 +855,11 @@ class ECPay_INVOICE_DELAY():
                 arErrors.append("16:Please remove CarruerNum.")
         # *載具類別為買受人自然人憑證(Citizen)時，請設定自然人憑證號碼，前2碼為大小寫英文，後14碼為數字
         elif arParameters['CarruerType'] == EcpayCarruerType.Citizen:
-            if re.match('/^[a-zA-Z]{2}\d{14}$/', arParameters['CarruerNum']) == None:
+            if re.match('^[a-zA-Z]{2}\d{14}$', arParameters['CarruerNum']) == None:
                 arErrors.append("16:Invalid CarruerNum.")
         # *載具類別為買受人手機條碼(Cellphone)時，請設定手機條碼，第1碼為「 / 」，後7碼為大小寫英文、數字、「+」、「-」或「.」
         elif arParameters['CarruerType'] == EcpayCarruerType.Cellphone:
-            if re.match('/^\/{1}[0-9a-zA-Z+-.]{7}$/', arParameters['CarruerNum']) == None:
+            if re.match('^\/{1}[0-9a-zA-Z+-.]{7}$', arParameters['CarruerNum']) == None:
                 arErrors.append("16:Invalid CarruerNum.")
         else:
             arErrors.append("16:Please remove CarruerNum.")
@@ -983,7 +990,7 @@ class ECPay_INVOICE_DELAY():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1218,7 +1225,7 @@ class ECPay_ALLOWANCE():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1292,7 +1299,7 @@ class ECPay_INVOICE_VOID():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1371,7 +1378,7 @@ class ECPay_ALLOWANCE_VOID():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1445,7 +1452,7 @@ class ECPay_INVOICE_SEARCH():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1513,7 +1520,7 @@ class ECPay_INVOICE_VOID_SEARCH():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1586,7 +1593,7 @@ class ECPay_ALLOWANCE_SEARCH():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1657,7 +1664,7 @@ class ECPay_ALLOWANCE_VOID_SEARCH():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1744,7 +1751,7 @@ class ECPay_INVOICE_NOTIFY():
         # 46.通知手機號碼 NotifyPhone
         # *若客戶手機號碼有值時，則預設格式為數字組成
         if len(arParameters['Phone']) > 0:
-            if re.match("/^[0-9]*$/", arParameters['Phone']) == None:
+            if re.match("^[0-9]*$", arParameters['Phone']) == None:
                 arErrors.append('46:Invalid Phone.')
 
         # *最大長度為20碼
@@ -1789,7 +1796,7 @@ class ECPay_INVOICE_NOTIFY():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1858,7 +1865,7 @@ class ECPay_INVOICE_TRIGGER():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1917,7 +1924,7 @@ class ECPay_CHECK_MOBILE_BARCODE():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 
@@ -1977,7 +1984,7 @@ class ECPay_CHECK_LOVE_CODE():
 
         try:
             if len(arErrors) > 0:
-                raise CustomException(''.join(arErrors))
+                raise CustomException(' '.join(arErrors))
         except CustomException:
             raise
 

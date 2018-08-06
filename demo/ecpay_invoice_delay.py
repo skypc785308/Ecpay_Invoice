@@ -47,7 +47,7 @@ RelateNumber = 'ECPAY' + time.strftime("%Y%m%d%H%M%S", time.localtime()) +\
    str(random.randint(1000000000, 2147483647))  # 產生測試用自訂訂單編號
 ecpay_invoice.Send['RelateNumber'] = RelateNumber
 ecpay_invoice.Send['CustomerID'] = ''
-ecpay_invoice.Send['CustomerIdentifier'] = '12345678'
+ecpay_invoice.Send['CustomerIdentifier'] = '1234567a'
 ecpay_invoice.Send['CustomerName'] = '123'
 ecpay_invoice.Send['CustomerAddr'] = '123'
 ecpay_invoice.Send['CustomerPhone'] = ''
@@ -60,7 +60,7 @@ ecpay_invoice.Send['CarruerType'] = ''
 ecpay_invoice.Send['CarruerNum'] = ''
 ecpay_invoice.Send['TaxType'] = '1'
 ecpay_invoice.Send['SalesAmount'] = 500
-ecpay_invoice.Send['InvoiceRemark'] = 'SDK TEST Python V1.0.3'
+ecpay_invoice.Send['InvoiceRemark'] = 'SDK TEST Python V1.0.4'
 ecpay_invoice.Send['InvType'] = '07'
 ecpay_invoice.Send['DelayFlag'] = '1'
 ecpay_invoice.Send['DelayDay'] = '1'
