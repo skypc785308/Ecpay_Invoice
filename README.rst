@@ -23,6 +23,8 @@ ECPAY電子發票Python模組
 
 change log:
 
+2018-08-09 修正lovecode判定，移除raise錯誤，只印出錯誤訊息供參考
+
 2018-08-06 更新CustomerIdentifier錯誤判斷
 
 2018-08-02 更新錯誤提示方式

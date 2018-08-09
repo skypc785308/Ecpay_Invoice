@@ -7,15 +7,6 @@ import re
 from ecpay_setting import *
 
 
-class CustomException(Exception):
-
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
-
-
 class EcpayInvoice():
 
     TimeStamp = ''
@@ -168,11 +159,9 @@ class ECPay_Invoice_Send():
         # 檢查是否有傳送網址
         if len(ServiceURL) == 0:
             arErrors.append('Invoice_Url is required.')
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
     '''
     *4處理需要轉換為urlencode的參數
     '''
@@ -433,7 +422,7 @@ class ECPay_INVOICE():
         # 12.列印註記Print(預設為No)
         #  *列印註記僅能為0或1
         if arParameters['Print'] != EcpayPrintMark.Yes and arParameters['Print'] != EcpayPrintMark.No:
-                arErrors.append( "12:Invalid Print.")
+                arErrors.append("12:Invalid Print.")
         # *若捐贈註記 = '1'(捐贈)時，則VAL = '0'(不列印)
         if arParameters['Donation'] == EcpayDonation.Yes:
             if arParameters['Print'] != EcpayPrintMark.No:
@@ -460,7 +449,7 @@ class ECPay_INVOICE():
         # 14.愛心碼LoveCode(預設為空字串)
         #  *若捐贈註記 = '1'(捐贈)時，則須有值
         if arParameters['Donation'] == EcpayDonation.Yes:
-            if re.match("/^([xX]{1}[0-9]{2,6}|[0-9]{3,7})$/", arParameters['LoveCode']) == None:
+            if re.match("^([xX]{1}[0-9]{2,6}|[0-9]{3,7})$", arParameters['LoveCode']) == None:
                 arErrors.append("14:Invalid LoveCode.")
         else:
             if len(arParameters['LoveCode']) > 0:
@@ -586,11 +575,9 @@ class ECPay_INVOICE():
             if arParameters['vat']:
                 if arParameters['vat'] != EcpayVatType.Yes and arParameters['vat'] != EcpayVatType.No:
                     arErrors.append("29:Invalid VatType.")
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         # 刪除items
         del arParameters['Items']
@@ -832,8 +819,8 @@ class ECPay_INVOICE_DELAY():
         # 14.愛心碼LoveCode(預設為空字串)
         #  *若捐贈註記 = '1'(捐贈)時，則須有值
         if arParameters['Donation'] == EcpayDonation.Yes:
-            if re.match("/^([xX]{1}[0-9]{2,6}|[0-9]{3,7})$/", arParameters['LoveCode']) == None:
-                arErrors.append( "14:Invalid LoveCode.")
+            if re.match("^([xX]{1}[0-9]{2,6}|[0-9]{3,7})$", arParameters['LoveCode']) == None:
+                arErrors.append("14:Invalid LoveCode.")
         else:
             if len(arParameters['LoveCode']) > 0:
                 arErrors.append( "14:Please remove LoveCode.")
@@ -988,11 +975,8 @@ class ECPay_INVOICE_DELAY():
             # * 必填項目交易類別名稱預設不能為空值僅允許ECPAY
             arParameters['PayAct'] = 'ECPAY'
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         # 刪除items
         del arParameters['Items']
@@ -1190,7 +1174,7 @@ class ECPay_ALLOWANCE():
         # 40.通知手機號碼 NotifyPhone
         # *若客戶手機號碼有值時，則預設格式為數字組成
         if len(arParameters['NotifyPhone']) > 0:
-            if re.match('/^[0-9]*$/',arParameters['NotifyPhone']) == None:
+            if re.match('^[0-9]*$',arParameters['NotifyPhone']) == None:
                 arErrors.append('40:Invalid NotifyPhone.')
         # * 最大20字元
         if len(arParameters['NotifyPhone']) > 20:
@@ -1223,11 +1207,8 @@ class ECPay_ALLOWANCE():
             # *含稅總金額
             arParameters['AllowanceAmount'] = int(arParameters['AllowanceAmount'])
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         # 刪除items
         del arParameters['Items']
@@ -1297,11 +1278,8 @@ class ECPay_INVOICE_VOID():
         if len(arParameters['Reason']) > 20:
             arErrors.append('43:Reason max length as 20.')
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
     '''
@@ -1376,11 +1354,8 @@ class ECPay_ALLOWANCE_VOID():
         if len(arParameters['AllowanceNo']) != 0 and len(arParameters['AllowanceNo']) != 16:
             arErrors.append('44:AllowanceNo length as 16.')
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
 
@@ -1450,11 +1425,8 @@ class ECPay_INVOICE_SEARCH():
         if len(arParameters['RelateNumber']) > 30:
             arErrors.append('4:RelateNumber max langth as 30.')
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
 
@@ -1518,11 +1490,8 @@ class ECPay_INVOICE_VOID_SEARCH():
         if len(arParameters['RelateNumber']) > 30:
             arErrors.append('4:RelateNumber max langth as 30.')
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
 
@@ -1591,11 +1560,8 @@ class ECPay_ALLOWANCE_SEARCH():
         if len(arParameters['AllowanceNo']) != 0 and len(arParameters['AllowanceNo']) != 16:
              arErrors.append('44:AllowanceNo length as 16.')
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
 
@@ -1662,11 +1628,8 @@ class ECPay_ALLOWANCE_VOID_SEARCH():
         if len(arParameters['AllowanceNo']) != 0 and len(arParameters['AllowanceNo']) != 16:
             arErrors.append('44:AllowanceNo length as 16.')
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
 
@@ -1781,24 +1744,21 @@ class ECPay_INVOICE_NOTIFY():
         # 48.發送內容類型 InvoiceTag
         # *固定給定下述預設值
         if arParameters['InvoiceTag'] != EcpayInvoiceTagType.Invoice and\
-        arParameters['InvoiceTag'] != EcpayInvoiceTagType.Invoice_Void and\
-        arParameters['InvoiceTag'] != EcpayInvoiceTagType.Allowance and\
-        arParameters['InvoiceTag'] != EcpayInvoiceTagType.Allowance_Void and\
-        arParameters['InvoiceTag'] != EcpayInvoiceTagType.Invoice_Winning:
+                arParameters['InvoiceTag'] != EcpayInvoiceTagType.Invoice_Void and\
+                arParameters['InvoiceTag'] != EcpayInvoiceTagType.Allowance and\
+                arParameters['InvoiceTag'] != EcpayInvoiceTagType.Allowance_Void and\
+                arParameters['InvoiceTag'] != EcpayInvoiceTagType.Invoice_Winning:
             arErrors.append('48:InvoiceTag is required.')
 
         # 49.發送對象 Notified
         # *固定給定下述預設值
         if arParameters['Notified'] != EcpayNotifiedType.Customer and\
-        arParameters['Notified'] != EcpayNotifiedType.vendor and\
-        arParameters['Notified'] != EcpayNotifiedType.All:
+                arParameters['Notified'] != EcpayNotifiedType.vendor and\
+                arParameters['Notified'] != EcpayNotifiedType.All:
             arErrors.append('49:Notified is required.')
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
 
@@ -1863,11 +1823,8 @@ class ECPay_INVOICE_TRIGGER():
         if arParameters['PayType'] != EcpayPayTypeCategory.Ecpay:
             arErrors.append("34:Invalid PayType.")
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
 
@@ -1922,11 +1879,8 @@ class ECPay_CHECK_MOBILE_BARCODE():
         if len(arParameters['BarCode']) != 8:
             arErrors.append("50:BarCode max length as 8.")
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
     '''
@@ -1982,11 +1936,8 @@ class ECPay_CHECK_LOVE_CODE():
         if len(arParameters['LoveCode']) > 7:
             arErrors.append("51:LoveCode max length as 7.")
 
-        try:
-            if len(arErrors) > 0:
-                raise CustomException(' '.join(arErrors))
-        except CustomException:
-            raise
+        if len(arErrors) > 0:
+            print(' '.join(arErrors))
 
         return arParameters
 

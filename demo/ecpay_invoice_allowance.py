@@ -38,7 +38,7 @@ ecpay_invoice.Send['CustomerName'] = ''
 ecpay_invoice.Send['InvoiceNo'] = 'FY10004005'
 ecpay_invoice.Send['AllowanceNotify'] = 'E'
 ecpay_invoice.Send['NotifyMail'] = 'test@localhost.com'
-ecpay_invoice.Send['NotifyPhone'] = ''
+ecpay_invoice.Send['NotifyPhone'] = '097897'
 ecpay_invoice.Send['AllowanceAmount'] = 100
 
 # 4. 送出
