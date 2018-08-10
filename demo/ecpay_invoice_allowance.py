@@ -34,7 +34,7 @@ ecpay_invoice.Send['Items'].append({
 
 RelateNumber = 'ECPAY' + time.strftime("%Y%m%d%H%M%S", time.localtime()) +\
    str(random.randint(1000000000, 2147483647))  # 產生測試用自訂訂單編號
-ecpay_invoice.Send['CustomerName'] = ''
+ecpay_invoice.Send['CustomerName'] = '測試名稱'
 ecpay_invoice.Send['InvoiceNo'] = 'FY10004005'
 ecpay_invoice.Send['AllowanceNotify'] = 'E'
 ecpay_invoice.Send['NotifyMail'] = 'test@localhost.com'

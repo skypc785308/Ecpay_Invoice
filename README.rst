@@ -9,19 +9,21 @@ ECPAY電子發票Python模組
 
 利用pip
 
-.. code-block:: python
+.. code-block::
 
     pip install ecpay_invoice
 
 匯入模組
 
-.. code-block:: python
+.. code-block::
 
     from ecpay_invoice.ecpay_main import *
 
 其他範例請看demo
 
 change log:
+
+2018-08-10 更新CustomerName最大可以到60個字
 
 2018-08-09 修正lovecode判定，移除raise錯誤，只印出錯誤訊息供參考
 

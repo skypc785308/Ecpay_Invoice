@@ -55,8 +55,8 @@ random.randint(1000000000, 2147483647))  # 產生測試用自訂訂單編號
 ecpay_invoice.Send['RelateNumber'] = RelateNumber
 ecpay_invoice.Send['CustomerID'] = ''
 ecpay_invoice.Send['CustomerIdentifier'] = ''
-ecpay_invoice.Send['CustomerName'] = '123'
-ecpay_invoice.Send['CustomerAddr'] = '123'
+ecpay_invoice.Send['CustomerName'] = '測試名稱'
+ecpay_invoice.Send['CustomerAddr'] = '測試地址'
 ecpay_invoice.Send['CustomerPhone'] = ''
 ecpay_invoice.Send['CustomerEmail'] = 'test@local.com'
 ecpay_invoice.Send['ClearanceMark'] = ''

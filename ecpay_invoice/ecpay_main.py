@@ -371,9 +371,9 @@ class ECPay_INVOICE():
         if arParameters['Print'] == EcpayPrintMark.Yes:
             if len(arParameters['CustomerName']) == 0 and arParameters['OnLine']:
                 arErrors.append('7:CustomerName is required.')
-        # *預設最大長度為30碼
-        if len(arParameters['CustomerName']) > 30:
-            arErrors.append('7:CustomerName max length as 30.')
+        # *預設最大長度為60碼
+        if len(arParameters['CustomerName'].decode('utf-8')) > 60:
+            arErrors.append('7:CustomerName max length as 60.')
 
         # 8.客戶地址 CustomerAddr(UrlEncode, 預設為空字串)
         #  *若列印註記 = '1'(列印)時，則客戶地址須有值
@@ -381,7 +381,7 @@ class ECPay_INVOICE():
             if len(arParameters['CustomerAddr']) == 0 and arParameters['OnLine']:
                 arErrors.append("8:CustomerAddr is required.")
         # *預設最大長度為100碼
-        if len(arParameters['CustomerAddr']) > 100:
+        if len(arParameters['CustomerAddr'].decode('utf-8')) > 100:
             arErrors.append("8:CustomerAddr max length as 100.")
 
         # 9.客戶手機號碼CustomerPhone
@@ -748,9 +748,9 @@ class ECPay_INVOICE_DELAY():
         if arParameters['Print'] == EcpayPrintMark.Yes:
             if len(arParameters['CustomerName']) == 0:
                 arErrors.append('7:CustomerName is required.')
-        # *預設最大長度為30碼
-        if len(arParameters['CustomerName']) > 30:
-            arErrors.append('7:CustomerName max length as 30.')
+        # *預設最大長度為60碼
+        if len(arParameters['CustomerName'].decode('utf-8')) > 60:
+            arErrors.append('7:CustomerName max length as 60.')
 
         # 8.客戶地址 CustomerAddr(UrlEncode, 預設為空字串)
         #  *若列印註記 = '1'(列印)時，則客戶地址須有值
@@ -758,7 +758,7 @@ class ECPay_INVOICE_DELAY():
             if len(arParameters['CustomerAddr']) == 0:
                 arErrors.append("8:CustomerAddr is required.")
         # *預設最大長度為100碼
-        if len(arParameters['CustomerAddr']) > 100:
+        if len(arParameters['CustomerAddr'].decode('utf-8')) > 100:
             arErrors.append("8:CustomerAddr max length as 100.")
 
         # 9.客戶手機號碼CustomerPhone
@@ -1083,9 +1083,9 @@ class ECPay_ALLOWANCE():
 
         # 7.客戶名稱CustomerName
         # x僅能為中英數字格式
-        # *預設最大長度為30碼
-        if len(arParameters['CustomerName']) > 30:
-            arErrors.append('7:CustomerName max length as 30.')
+        # *預設最大長度為60碼
+        if len(arParameters['CustomerName'].decode('utf-8')) > 60:
+            arErrors.append('7:CustomerName max length as 60.')
 
         # 20.21.22.23.24.25.商品資訊
         # *不可為空
