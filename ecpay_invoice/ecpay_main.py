@@ -291,9 +291,12 @@ class ECPay_INVOICE():
         sItemAmount = ''
         sItemRemark = ''
 
-        for key, val in self.parameters.items():
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
+
+        for key, val in parameters.items():
             if key in arParameters:
-                self.parameters[key] = arParameters[key]
+                parameters[key] = arParameters[key]
         # 商品資訊組合
         nItems_Count_Total = len(arParameters['Items'])  # 商品總筆數
         if nItems_Count_Total != 0:
@@ -315,14 +318,14 @@ class ECPay_INVOICE():
                     sItemAmount += '|'
                     sItemRemark += '|'
                 nItems_Foreach_Count += 1
-        self.parameters['ItemName'] = sItemName		# 商品名稱
-        self.parameters['ItemCount'] = sItemCount
-        self.parameters['ItemWord'] = sItemWord		# 商品單位
-        self.parameters['ItemPrice'] = sItemPrice
-        self.parameters['ItemTaxType'] = sItemTaxType
-        self.parameters['ItemAmount'] = sItemAmount
-        self.parameters['ItemRemark'] = sItemRemark 	# 商品備註
-        return self.parameters
+        parameters['ItemName'] = sItemName		# 商品名稱
+        parameters['ItemCount'] = sItemCount
+        parameters['ItemWord'] = sItemWord		# 商品單位
+        parameters['ItemPrice'] = sItemPrice
+        parameters['ItemTaxType'] = sItemTaxType
+        parameters['ItemAmount'] = sItemAmount
+        parameters['ItemRemark'] = sItemRemark 	# 商品備註
+        return parameters
     
     '''
     *2 - 2驗證參數格式
@@ -526,9 +529,10 @@ class ECPay_INVOICE():
 
                 bFind_Tag = str(val['ItemTaxType']).find('|')
                 if bFind_Tag != -1 or not val['ItemTaxType']:
-                    bError_Tag = True
-                    arErrors.append('24:Invalid ItemTaxType.')
-                    break
+                    if arParameters['TaxType'] == EcpayTaxType.Mix:
+                        bError_Tag = True
+                        arErrors.append('24:Invalid ItemTaxType.')
+                        break
                 bFind_Tag = str(val['ItemAmount']).find('|')
                 if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
@@ -668,9 +672,12 @@ class ECPay_INVOICE_DELAY():
         sItemTaxType = ''
         sItemAmount = ''
 
-        for key, val in self.parameters.items():
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
+
+        for key, val in parameters.items():
             if key in arParameters:
-                self.parameters[key] = arParameters[key]
+                parameters[key] = arParameters[key]
         # 商品資訊組合
         nItems_Count_Total = len(arParameters['Items'])  # 商品總筆數
         if nItems_Count_Total != 0:
@@ -691,13 +698,13 @@ class ECPay_INVOICE_DELAY():
                     sItemAmount += '|'
 
                 nItems_Foreach_Count += 1
-        self.parameters['ItemName'] = sItemName  # 商品名稱
-        self.parameters['ItemCount'] = sItemCount
-        self.parameters['ItemWord'] = sItemWord  # 商品單位
-        self.parameters['ItemPrice'] = sItemPrice
-        self.parameters['ItemTaxType'] = sItemTaxType
-        self.parameters['ItemAmount'] = sItemAmount
-        return self.parameters
+        parameters['ItemName'] = sItemName  # 商品名稱
+        parameters['ItemCount'] = sItemCount
+        parameters['ItemWord'] = sItemWord  # 商品單位
+        parameters['ItemPrice'] = sItemPrice
+        parameters['ItemTaxType'] = sItemTaxType
+        parameters['ItemAmount'] = sItemAmount
+        return parameters
 
     '''
     *2 - 2驗證參數格式
@@ -895,9 +902,10 @@ class ECPay_INVOICE_DELAY():
                     break
                 bFind_Tag = str(val['ItemTaxType']).find('|')
                 if bFind_Tag != -1 or not val['ItemTaxType']:
-                    bError_Tag = True
-                    arErrors.append('24:Invalid ItemTaxType.')
-                    break
+                    if arParameters['TaxType'] == EcpayTaxType.Mix:
+                        bError_Tag = True
+                        arErrors.append('24:Invalid ItemTaxType.')
+                        break
                 bFind_Tag = str(val['ItemAmount']).find('|')
                 if bFind_Tag != -1 or val['ItemAmount'] < 0:
                     bError_Tag = True
@@ -1044,9 +1052,13 @@ class ECPay_ALLOWANCE():
         sItemTaxType = ''
         sItemAmount = ''
 
-        for key, val in self.parameters.items():
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
+
+
+        for key, val in parameters.items():
             if key in arParameters:
-                self.parameters[key] = arParameters[key]
+                parameters[key] = arParameters[key]
         # 商品資訊組合
         nItems_Count_Total = len(arParameters['Items'])  # 商品總筆數
         if nItems_Count_Total != 0:
@@ -1067,13 +1079,13 @@ class ECPay_ALLOWANCE():
                     sItemAmount += '|'
 
                 nItems_Foreach_Count += 1
-        self.parameters['ItemName'] = sItemName  # 商品名稱
-        self.parameters['ItemCount'] = sItemCount
-        self.parameters['ItemWord'] = sItemWord  # 商品單位
-        self.parameters['ItemPrice'] = sItemPrice
-        self.parameters['ItemTaxType'] = sItemTaxType
-        self.parameters['ItemAmount'] = sItemAmount
-        return self.parameters
+        parameters['ItemName'] = sItemName  # 商品名稱
+        parameters['ItemCount'] = sItemCount
+        parameters['ItemWord'] = sItemWord  # 商品單位
+        parameters['ItemPrice'] = sItemPrice
+        parameters['ItemTaxType'] = sItemTaxType
+        parameters['ItemAmount'] = sItemAmount
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1249,11 +1261,14 @@ class ECPay_INVOICE_VOID():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1317,11 +1332,14 @@ class ECPay_ALLOWANCE_VOID():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1404,11 +1422,14 @@ class ECPay_INVOICE_SEARCH():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1467,11 +1488,14 @@ class ECPay_INVOICE_VOID_SEARCH():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1533,11 +1557,14 @@ class ECPay_ALLOWANCE_SEARCH():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1600,11 +1627,14 @@ class ECPay_ALLOWANCE_VOID_SEARCH():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1672,11 +1702,14 @@ class ECPay_INVOICE_NOTIFY():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1796,11 +1829,14 @@ class ECPay_INVOICE_TRIGGER():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1861,11 +1897,14 @@ class ECPay_CHECK_MOBILE_BARCODE():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
@@ -1918,11 +1957,14 @@ class ECPay_CHECK_LOVE_CODE():
 
     def insert_string(self, arParameters=dict):
 
-        for key, val in self.parameters.items():
-            if key in arParameters:
-                self.parameters[key] = arParameters[key]
+        # Python特性，需要複製一個字典，不然回修改到原先宣告的字典的key與value
+        parameters = self.parameters.copy()
 
-        return self.parameters
+        for key, val in parameters.items():
+            if key in arParameters:
+                parameters[key] = arParameters[key]
+
+        return parameters
 
     '''
     * 2-2 驗證參數格式
