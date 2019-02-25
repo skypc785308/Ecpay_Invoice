@@ -23,6 +23,8 @@ ECPAY電子發票Python模組
 
 change log:
 
+2019-02-25 v1.1.0 merge from ecpay_invoice3
+
 2018-08-14 v1.0.7 修正ItemTaxtType非必填，修正執行第二次初始字典會被修改問題。
 
 2018-08-10 v1.0.6 更新CustomerName最大可以到60個字
